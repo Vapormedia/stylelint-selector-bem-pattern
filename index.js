@@ -45,6 +45,12 @@ module.exports = stylelint.createPlugin(ruleName, function(options) {
     var bemLinterWarnings = bemLinterResult.warnings();
 
     bemLinterWarnings.forEach(function(warning) {
+      // Stylelint needs a line and some errors 
+      // reported by bem don't have a line
+      // e.g. Invalid component name from implicit conversion from filename
+      if(!warning.line) {
+        warning.line = 1;
+      }
       stylelint.utils.report({
         ruleName: ruleName,
         result: result,
